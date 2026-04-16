@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Королевство Сартифия | Официальный портал</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #2a2418;
+            font-family: 'Georgia', 'Times New Roman', 'Palatino', serif;
+            color: #f0ebd8;
+            line-height: 1.5;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* пергаментный фон с текстурой */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" opacity="0.08"><path fill="none" d="M0 0 L400 0 L400 300 L0 300 Z" stroke="%23c9a87c" stroke-width="0.5"/><path d="M20 30 L380 30 M20 70 L380 70 M20 110 L380 110 M20 150 L380 150 M20 190 L380 190 M20 230 L380 230 M20 270 L380 270" stroke="%23b88d5c" stroke-width="0.3" stroke-dasharray="4 6"/><circle cx="50" cy="50" r="3" fill="%23c49a6c" opacity="0.5"/><circle cx="350" cy="180" r="4" fill="%23c49a6c" opacity="0.4"/></svg>');
+            background-repeat: repeat;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        /* основной контейнер */
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 1.5rem 2rem;
+            backdrop-filter: blur(1px);
+        }
+
+        /* шапка: слева вверху название */
+        .royal-header {
+            margin-bottom: 2.5rem;
+            border-bottom: 2px solid #dbb87c;
+            padding-bottom: 0.75rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            flex-wrap: wrap;
+        }
+
+        .kingdom-title {
+            font-size: 2.2rem;
+            font-weight: normal;
+            letter-spacing: 2px;
+            text-shadow: 3px 3px 0px #1e1a10;
+            color: #f7e5b5;
+            background: linear-gradient(135deg, #f9e0a0, #dbb362);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            text-shadow: none;
+            font-family: 'Cinema', 'Georgia', serif;
+        }
+        /* добавим альтернативный стиль для текста, чтобы сохранить читаемость */
+        .kingdom-title {
+            color: #f7e5b5;
+            text-shadow: 2px 2px 0 #4a3a28;
+        }
+
+        .coat-of-arms {
+            font-size: 1.8rem;
+            opacity: 0.8;
+        }
+
+        /* панель навигации (вкладки) */
+        .nav-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 2.5rem;
+            flex-wrap: wrap;
+            border-bottom: 1px solid #dbb87c50;
+            padding-bottom: 0.8rem;
+        }
+
+        .tab-btn {
+            background: #2f2a1f;
+            border: 1px solid #b69564;
+            color: #eeddbb;
+            padding: 0.7rem 1.8rem;
+            font-size: 1.1rem;
+            font-family: 'Georgia', serif;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border-radius: 30px 30px 12px 12px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        }
+
+        .tab-btn:hover {
+            background: #4a3a28;
+            border-color: #e7bc7e;
+            color: #ffefcf;
+            transform: translateY(-2px);
+        }
+
+        .tab-btn.active {
+            background: #7a5a3a;
+            border-color: #f5cf8e;
+            color: #fff3df;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            text-shadow: 0 0 3px #ca9622;
+        }
+
+        /* контентная область */
+        .content-pane {
+            background: rgba(30, 26, 20, 0.7);
+            backdrop-filter: blur(2px);
+            border-radius: 32px;
+            padding: 1.8rem 2rem;
+            border: 1px solid #cbaa6e;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            min-height: 450px;
+        }
+
+        /* карточки новостей, законов и т.д. */
+        .news-list, .laws-list, .court-list, .social-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.8rem;
+        }
+
+        .card {
+            background: #1f1b13e0;
+            border-left: 6px solid #e6bc7e;
+            padding: 1.2rem 1.6rem;
+            border-radius: 20px;
+            transition: 0.15s linear;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .card:hover {
+            background: #2b241be0;
+            border-left-color: #f7d48e;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #ffdfaa;
+            margin-bottom: 0.4rem;
+            letter-spacing: 0.5px;
+        }
+
+        .card-date {
+            font-size: 0.8rem;
+            color: #c6ad7a;
+            margin-bottom: 0.8rem;
+            font-family: monospace;
+        }
+
+        .card-content {
+            font-size: 1rem;
+            color: #ede0c8;
+            line-height: 1.45;
+        }
+
+        .card-footer {
+            margin-top: 0.8rem;
+            font-style: italic;
+            font-size: 0.85rem;
+            color: #bbaa82;
+            border-top: 1px dashed #7a623e;
+            padding-top: 0.6rem;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 3rem;
+            font-size: 1.3rem;
+            color: #e9dbbd;
+        }
+
+        .error-message {
+            background: #3e2a1cb3;
+            border: 1px solid #e4b363;
+            padding: 1.5rem;
+            border-radius: 24px;
+            text-align: center;
+            color: #ffcf8a;
+        }
+
+        footer {
+            margin-top: 3rem;
+            text-align: center;
+            font-size: 0.8rem;
+            color: #aa976e;
+            border-top: 1px solid #6a5a3e50;
+            padding-top: 1.2rem;
+        }
+
+        /* для удобства адаптивности */
+        @media (max-width: 700px) {
+            .container {
+                padding: 1rem;
+            }
+            .kingdom-title {
+                font-size: 1.6rem;
+            }
+            .tab-btn {
+                padding: 0.5rem 1.2rem;
+                font-size: 0.9rem;
+            }
+            .content-pane {
+                padding: 1rem;
+            }
+            .card-title {
+                font-size: 1.2rem;
+            }
+        }
+
+        /* дополнительная эстетика */
+        .scroll-decoration {
+            background: repeating-linear-gradient(45deg, #b78d4f20, #b78d4f20 10px, #d4ae6e20 10px, #d4ae6e20 20px);
+            border-radius: 24px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="royal-header">
+        <div class="kingdom-title">🏰 Королевство Сартифия</div>
+        <div class="coat-of-arms">⚜️ ✦ ⚜️</div>
+    </div>
+
+    <div class="nav-tabs">
+        <button class="tab-btn" data-tab="news">📜 Новости</button>
+        <button class="tab-btn" data-tab="laws">⚖️ Законы</button>
+        <button class="tab-btn" data-tab="court">🏛️ Судебные дела</button>
+        <button class="tab-btn" data-tab="social">🤝 Соц. программы</button>
+    </div>
+
+    <div class="content-pane" id="dynamicContent">
+        <div class="loading">📜 Загрузка...</div>
+    </div>
+
+    <footer>
+        &copy; Канцелярия Его Величества Сартифии, 2026
+    </footer>
+</div>
+
+<script>
+    // ---------- Конфигурация ----------
+    // Все данные загружаются из папки data/ (JSON-файлы)
+    // Структура файлов:
+    // data/news.json        -> массив объектов {title, date, content, extra?}
+    // data/laws.json        -> массив {title, description, adopted}
+    // data/court.json       -> массив {caseName, verdict, date, summary}
+    // data/social.json      -> массив {programName, description, beneficiaries, status}
+    
+    // Функция для загрузки JSON с обработкой ошибок
+    async function fetchJSON(url) {
+        try {
+            const response = await fetch(url);
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+            }
+            const data = await response.json();
+            return { success: true, data };
+        } catch (error) {
+            console.error(`Ошибка загрузки ${url}:`, error);
+            return { success: false, error: error.message };
+        }
+    }
+
+    // Рендер новостей (главная страница по умолчанию)
+    function renderNews(newsArray) {
+        if (!newsArray || newsArray.length === 0) {
+            return `<div class="error-message">📭 В королевстве пока нет свежих вестей.</div>`;
+        }
+        let html = `<div class="news-list">`;
+        for (let item of newsArray) {
+            const title = escapeHtml(item.title) || 'Без заголовка';
+            const date = escapeHtml(item.date) || 'Дата не указана';
+            const content = escapeHtml(item.content) || 'Нет описания события.';
+            html += `
+                <div class="card">
+                    <div class="card-title">📰 ${title}</div>
+                    <div class="card-date">📅 ${date}</div>
+                    <div class="card-content">${content}</div>
+                    <div class="card-footer">👑 Королевский вестник</div>
+                </div>
+            `;
+        }
+        html += `</div>`;
+        return html;
+    }
+
+    // Рендер Законов
+    function renderLaws(lawsArray) {
+        if (!lawsArray || lawsArray.length === 0) {
+            return `<div class="error-message">⚜️ Свод законов пополняется. Добавьте данные в data/laws.json</div>`;
+        }
+        let html = `<div class="laws-list"><h3 style="margin-bottom: 1rem; font-family: monospace;">📜 Кодекс Сартифии</h3>`;
+        for (let law of lawsArray) {
+            const title = escapeHtml(law.title) || 'Уложение';
+            const description = escapeHtml(law.description) || 'Описание отсутствует';
+            const adopted = law.adopted ? `<span style="display:inline-block; margin-top:5px;">🗓️ Принят: ${escapeHtml(law.adopted)}</span>` : '';
+            html += `
+                <div class="card">
+                    <div class="card-title">⚖️ ${title}</div>
+                    <div class="card-content">${description}</div>
+                    ${adopted ? `<div class="card-footer">${adopted}</div>` : '<div class="card-footer">📜 Закон королевства</div>'}
+                </div>
+            `;
+        }
+        html += `</div>`;
+        return html;
+    }
+
+    // Рендер Судебных дел
+    function renderCourt(courtArray) {
+        if (!courtArray || courtArray.length === 0) {
+            return `<div class="error-message">🏛️ Судебные дела отсутствуют</div>`;
+        }
+        let html = `<div class="court-list"><h3 style="margin-bottom: 1rem;">⚖️ Вердикты королевского суда</h3>`;
+        for (let item of courtArray) {
+            const caseName = escapeHtml(item.caseName) || 'Дело без названия';
+            const verdict = escapeHtml(item.verdict) || 'Решение не оглашено';
+            const date = item.date ? escapeHtml(item.date) : '';
+            const summary = item.summary ? escapeHtml(item.summary) : '';
+            html += `
+                <div class="card">
+                    <div class="card-title">🏛️ ${caseName}</div>
+                    ${date ? `<div class="card-date">📅 ${date}</div>` : ''}
+                    <div class="card-content"><strong>Решение:</strong> ${verdict}</div>
+                    ${summary ? `<div class="card-content" style="margin-top:8px;"><em>${summary}</em></div>` : ''}
+                    <div class="card-footer">⚜️ Королевская Фемида</div>
+                </div>
+            `;
+        }
+        html += `</div>`;
+        return html;
+    }
+
+    // Рендер Социальных программ
+    function renderSocial(socialArray) {
+        if (!socialArray || socialArray.length === 0) {
+            return `<div class="error-message">🤝 В настоящее время нет активных соц. программ.</div>`;
+        }
+        let html = `<div class="social-list"><h3 style="margin-bottom: 1rem;">🌟 Забота о подданных Сартифии</h3>`;
+        for (let prog of socialArray) {
+            const name = escapeHtml(prog.programName) || 'Безымянная программа';
+            const description = escapeHtml(prog.description) || 'Описание отсутствует';
+            const beneficiaries = prog.beneficiaries ? escapeHtml(prog.beneficiaries) : '';
+            const status = prog.status ? escapeHtml(prog.status) : 'Активна';
+            html += `
+                <div class="card">
+                    <div class="card-title">🤝 ${name}</div>
+                    <div class="card-content">${description}</div>
+                    <div class="card-footer">
+                        ${beneficiaries ? `👥 ${beneficiaries} | ` : ''}📌 Статус: ${status}
+                    </div>
+                </div>
+            `;
+        }
+        html += `</div>`;
+        return html;
+    }
+
+    // вспомогательная функция для безопасности (защита от XSS)
+    function escapeHtml(str) {
+        if (!str) return '';
+        return str.replace(/[&<>]/g, function(m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            if (m === '>') return '&gt;';
+            return m;
+        }).replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, function(c) {
+            return c;
+        });
+    }
+
+    // Текущая активная вкладка
+    let currentTab = 'news';
+
+    // Основная функция отображения контента (вызывается при загрузке и при смене вкладки)
+    async function loadContent(tabId) {
+        const contentDiv = document.getElementById('dynamicContent');
+        if (!contentDiv) return;
+        
+        // Показываем индикатор загрузки
+        contentDiv.innerHTML = `<div class="loading">⌛ Загружаем архивы Королевства ${tabId === 'news' ? 'Новости' : (tabId === 'laws' ? 'Законов' : (tabId === 'court' ? 'Судебных дел' : 'Соц. программ'))}...</div>`;
+        
+        let result = null;
+        switch(tabId) {
+            case 'news':
+                result = await fetchJSON('data/news.json');
+                if (result.success) {
+                    contentDiv.innerHTML = renderNews(result.data);
+                } else {
+                    contentDiv.innerHTML = `<div class="error-message">❌ Не удалось загрузить новости.</div>`;
+                }
+                break;
+            case 'laws':
+                result = await fetchJSON('data/laws.json');
+                if (result.success) {
+                    contentDiv.innerHTML = renderLaws(result.data);
+                } else {
+                    contentDiv.innerHTML = `<div class="error-message">⚜️ Ошибка загрузки законов</div>`;
+                }
+                break;
+            case 'court':
+                result = await fetchJSON('data/court.json');
+                if (result.success) {
+                    contentDiv.innerHTML = renderCourt(result.data);
+                } else {
+                    contentDiv.innerHTML = `<div class="error-message">🏛️ Не удалось загрузить судебные дела</div>`;
+                }
+                break;
+            case 'social':
+                result = await fetchJSON('data/social.json');
+                if (result.success) {
+                    contentDiv.innerHTML = renderSocial(result.data);
+                } else {
+                    contentDiv.innerHTML = `<div class="error-message">🤝 Ошибка загрузки социальных программ</div>`;
+                }
+                break;
+            default:
+                contentDiv.innerHTML = `<div class="error-message">Неизвестный раздел</div>`;
+        }
+    }
+
+    // Установка активной вкладки и переключение
+    function setActiveTab(tabId) {
+        currentTab = tabId;
+        const buttons = document.querySelectorAll('.tab-btn');
+        buttons.forEach(btn => {
+            if (btn.getAttribute('data-tab') === tabId) {
+                btn.classList.add('active');
+            } else {
+                btn.classList.remove('active');
+            }
+        });
+        loadContent(tabId);
+    }
+
+    // Обработчики для вкладок + изначальная загрузка новостей
+    function initNavigation() {
+        const tabs = document.querySelectorAll('.tab-btn');
+        tabs.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const tabId = btn.getAttribute('data-tab');
+                if (tabId) {
+                    setActiveTab(tabId);
+                }
+            });
+        });
+        // Загружаем по умолчанию новости (главная)
+        setActiveTab('news');
+    }
+
+    // Дополнительная проверка наличия файлов, но не обязательная
+    window.addEventListener('DOMContentLoaded', () => {
+        initNavigation();
+    });
+</script>
+</body>
+</html>
